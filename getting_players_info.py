@@ -6,20 +6,21 @@ def get_players_info():
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "html.parser")
-        #print(soup)
-        lista_pilkarzy = soup.find_all("a", class_="playerName")
-        lista_pozycji = soup.find_all("td", class_="hide-s")
+        players = soup.find_all("a", class_="playerName")
+        positions = soup.find_all("td", class_="hide-s")
+        
         name = []
-        for pilkarz in lista_pilkarzy:
-            name.append(pilkarz.text.strip())
+        for player in players:
+            name.append(player.text.strip())
+            
         i = 0
         position = []
         country = []
-        while i < len(lista_pozycji):
+        while i < len(positions):
             if i%2 == 0 and i != 0:
-                position.append(lista_pozycji[i].text.strip())
+                position.append(positions[i].text.strip())
             else:
-                country.append(lista_pozycji[i].text.strip()) 
+                country.append(positions[i].text.strip()) 
             i+=1
 
         position.append(country[0])
@@ -28,6 +29,7 @@ def get_players_info():
         for i in range(len(position)):
             print((name[i],position[i],country[i]))
     else:
-        print("Wystąpił błąd podczas pobierania danych.")
+        print("An error occurred while downloading data.")
 
 get_players_info()
+
